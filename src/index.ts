@@ -21,9 +21,9 @@ const dt = new DataTransfer();
 let img: HTMLImageElement;
 let initImageWidth: number, initImageHeight: number;
 
-const boxParagraph: HTMLElement = document.querySelector(".resize-module-container__body-paragraph");
 const backImage: HTMLElement = document.querySelector(".resize-module-container__body-image");
 const frontImage: HTMLElement = document.querySelector(".resize-module-container__body-image-area");
+const moduleTitle: HTMLElement = document.querySelector(".resize-module-container__body-paragraph");
 
 let viewportImageOffset = backImage.getBoundingClientRect();
 
@@ -246,7 +246,7 @@ const imageRefactorMethod = () => {
         }
       }
 
-      if (targetWidth * targetHeight !== 0) {
+      if (targetWidth !== 0 && targetHeight !== 0) {
         checkProportions();
       }
 
@@ -318,13 +318,15 @@ const imageInputChangeMethod = () => {
   const fileChange = async function () {
     targetWidth = Number(currentFileInput.getAttribute('data-target-width'));
     targetHeight = Number(currentFileInput.getAttribute('data-target-height'));
-    boxParagraph.textContent = "Минимальные требования: " + targetWidth + "px * " + targetHeight + "px";
+    const moduleTitleText = currentFileInput.getAttribute('data-module-title');
+
+    if (moduleTitleText !== "" || moduleTitleText !== undefined) {
+      moduleTitle.textContent = moduleTitleText;
+    } else {
+      moduleTitle.textContent = "Модуль обработки изображений";
+    }
 
     const file: File = currentFileInput.files[0];
-
-    if (file.type == 'gif' || file.type == 'mp4') {
-      return;
-    }
 
     const compressedFile: Blob = await compressImage(file, {
       quality: Math.min(1, (2097152 / file.size)),
@@ -335,7 +337,7 @@ const imageInputChangeMethod = () => {
     fileReader.addEventListener("load", () => {
       img = new Image();
       img.src = fileReader.result as string;
-      img.addEventListener("load", checkImage);
+      img.addEventListener("load", checkImageForCompliance);
     });
   };
   resizableFileInputs.forEach((fileInput: HTMLInputElement) => {
@@ -344,7 +346,7 @@ const imageInputChangeMethod = () => {
       fileChange();
     });
   });
-  const checkImage = () => {
+  const checkImageForCompliance = () => {
     if (img.width < targetWidth || img.height < targetHeight) {
       alertImageIncorrectSize();
       return;
@@ -360,12 +362,13 @@ const imageInputChangeMethod = () => {
 
     const dw = initImageWidth / Math.min(window.innerWidth, 900);
     const dh = initImageHeight / Math.min(window.innerHeight - 200, 600);
+    const areaMargin = 88;
 
     dRes = Math.min(dw, dh);
 
-    backImage.style.width = (initImageWidth / dRes - 88) + "px";
-    backImage.style.height = (initImageHeight / dRes - 88) + "px";
-    backImage.style.backgroundSize = (initImageWidth / dRes - 88) + "px " + (initImageHeight / dRes - 88) + "px";
+    backImage.style.width = (initImageWidth / dRes - areaMargin) + "px";
+    backImage.style.height = (initImageHeight / dRes - areaMargin) + "px";
+    backImage.style.backgroundSize = (initImageWidth / dRes - areaMargin) + "px " + (initImageHeight / dRes - areaMargin) + "px";
     backImage.style.backgroundImage = "url('" + fileReader.result + "')";
 
     viewportImageOffset = backImage.getBoundingClientRect();
@@ -391,7 +394,7 @@ const imageInputChangeMethod = () => {
     setImagesPosition();
   };
   const updateImageAfterWindowResize = () => {
-    requestAnimationFrame(getImageData);
+    getImageData();
   };
   window.removeEventListener("resize", updateImageAfterWindowResize);
 
@@ -437,7 +440,7 @@ const imageInputChangeMethod = () => {
     imageRefactorPage.classList.remove("resize-module_disable");
 
     window.addEventListener("resize", updateImageAfterWindowResize);
-    requestAnimationFrame(getImageData);
+    getImageData();
   }
 
   document.querySelector(".resize-module-container__button_type-deny").addEventListener("click", removeUpdates);
