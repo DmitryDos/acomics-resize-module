@@ -145,23 +145,28 @@
   right: 0;
   bottom: 0;
 }
+
 .resize-module-container__background {
   position: absolute;
   background: rgba(211, 205, 197, 0.3);
 }
+
 .resize-module-container__background_pos_t {
   top: 0;
   left: 0;
   right: 0;
 }
+
 .resize-module-container__background_pos_b {
   bottom: 0;
   left: 0;
   right: 0;
 }
+
 .resize-module-container__background_pos_l {
   left: 0;
 }
+
 .resize-module-container__background_pos_r {
   right: 0;
 }
