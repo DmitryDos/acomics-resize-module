@@ -92,20 +92,11 @@
   color: var(--color-text-main);
 }
 
-.resize-module-container__body-text {
-  width: calc(100% - 12px);
-  text-align: center;
-  color: var(--color-text-main__hover);
-  font-size: 16px;
-  margin: 0 0 12px 0;
-  align-self: center;
-}
-
 .resize-module-container__body-paragraph {
   width: calc(100% - 12px);
   text-align: center;
   color: var(--color-text-main__hover);
-  font-size: 14px;
+  font-size: 16px;
   margin: 0 0 12px 0;
   align-self: center;
 }
@@ -340,13 +331,8 @@
     height: 42px;
   }
 
-  .resize-module-container__body-text {
-    margin: -26px 0 0 0;
-    height: 12px;
-  }
-
   .resize-module-container__body-paragraph {
-    margin: 0;
+    margin: -10px 0 0 0;
     height: 12px;
   }
 
