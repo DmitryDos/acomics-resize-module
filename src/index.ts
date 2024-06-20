@@ -370,12 +370,10 @@ const imageInputChangeMethod = () => {
     backImage.style.backgroundImage = "url('" + fileReader.result + "')";
 
     viewportImageOffset = backImage.getBoundingClientRect();
-
     backImage.scrollIntoView({
       block: 'center',
       inline: 'center'
     });
-
     const imageDx = Math.min(
       viewportImageOffset.width,
       viewportImageOffset.height * targetWidth / targetHeight);
@@ -426,7 +424,6 @@ const imageInputChangeMethod = () => {
     currentFileInput.value = '';
     closeResizeModule();
   };
-
   const closeResizeModule = () => {
     continuePageScrolling();
     imageRefactorPage.classList.add("resize-module_disable");
@@ -440,7 +437,6 @@ const imageInputChangeMethod = () => {
     window.addEventListener("resize", updateImageAfterWindowResize);
     getImageData();
   }
-
   document.querySelector(".resize-module-container__button_type-deny").addEventListener("click", removeUpdates);
   document.querySelector(".resize-module-container__close-button").addEventListener("click", removeUpdates);
 };
