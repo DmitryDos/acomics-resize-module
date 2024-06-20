@@ -338,7 +338,7 @@ const imageInputChangeMethod = () => {
       img = new Image();
       img.src = fileReader.result as string;
       img.addEventListener("load", checkImageForCompliance);
-    });
+    }, {once:true});
   };
   resizableFileInputs.forEach((fileInput: HTMLInputElement) => {
     fileInput.addEventListener("change", () => {
@@ -348,11 +348,9 @@ const imageInputChangeMethod = () => {
   });
   const checkImageForCompliance = () => {
     if (img.width < targetWidth || img.height < targetHeight) {
+      removeUpdates();
       alertImageIncorrectSize();
-      return;
-    } else if (img.width === targetWidth && img.height === targetHeight) {
-      return;
-    } else {
+    } else if (img.width !== targetWidth || img.height !== targetHeight) {
       openResizeModule();
     }
   }
